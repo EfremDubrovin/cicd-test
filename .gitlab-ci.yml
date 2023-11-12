@@ -29,7 +29,9 @@ build_job:
 
 trigger_aggregator_pipeline:
   stage: trigger
+  dependencies:
+    - build_job
   only:
-    - develop
+    - main
   script:
     - curl -X POST -F token=$CI_JOB_TOKEN -F ref=main https://gitlab.com/api/v4/projects/cicd-training2/aggregator/pipeline
