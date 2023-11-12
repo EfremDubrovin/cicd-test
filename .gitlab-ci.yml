@@ -21,6 +21,15 @@ build_job:
   stage: build
   script:
     - mvn $MAVEN_CLI_OPTS clean install
+  dependencies:
+    - test_job
   artifacts:
     paths:
       - target/*.jar
+
+trigger_aggregator_pipeline:
+  stage: trigger
+  only:
+    - develop
+  script:
+    - curl -X POST -F token=$CI_JOB_TOKEN -F ref=main https://gitlab.com/api/v4/projects/cicd-training2/aggregator/pipeline

@@ -18,12 +18,23 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "order")
-    private List<Shipment> shipments;
-
     @Column(name = "order_number")
     private String orderNumber;
 
     @Column(name = "total_amount", precision = 10, scale = 2)
     private BigDecimal totalAmount;
+
+    @OneToMany(mappedBy = "order")
+    private List<Shipment> shipments;
+
+    public Order(String orderNumber, BigDecimal totalAmount, List<Shipment> shipments) {
+        this.shipments = shipments;
+        this.orderNumber = orderNumber;
+        this.totalAmount = totalAmount;
+    }
+
+    public Order(String orderNumber, BigDecimal totalAmount) {
+        this.orderNumber = orderNumber;
+        this.totalAmount = totalAmount;
+    }
 }

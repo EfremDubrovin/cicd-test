@@ -1,6 +1,7 @@
 package com.deltasource.eu.domainmodel.model;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,11 +26,27 @@ public class Product {
     private Long id;
 
     @ManyToMany(mappedBy = "products")
-    private List<Shipment> shipments;
+    private List<Shipment> shipments = new ArrayList<>();
 
     @Column(name = "product_name")
     private String productName;
 
     @Column(name = "price", precision = 10, scale = 2)
     private BigDecimal price;
+
+    @Column(name = "barcode", unique = true)
+    private String barcode;
+
+    public Product(String productName, BigDecimal price, String barcode, List<Shipment> shipments) {
+        this.shipments = shipments;
+        this.productName = productName;
+        this.price = price;
+        this.barcode = barcode;
+    }
+
+    public Product(String productName, BigDecimal price, String barcode) {
+        this.productName = productName;
+        this.price = price;
+        this.barcode = barcode;
+    }
 }

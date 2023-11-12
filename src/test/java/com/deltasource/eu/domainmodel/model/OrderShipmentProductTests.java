@@ -3,17 +3,14 @@ package com.deltasource.eu.domainmodel.model;
 import com.deltasource.eu.domainmodel.repository.OrderRepository;
 import com.deltasource.eu.domainmodel.repository.ProductRepository;
 import com.deltasource.eu.domainmodel.repository.ShipmentRepository;
+import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.annotation.DirtiesContext;
-
-import java.math.BigDecimal;
-import java.util.Arrays;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @DataJpaTest
 class OrderShipmentProductTests {
