@@ -11,11 +11,13 @@ before_script:
   - export PATH=$MAVEN_HOME/bin:$PATH
 
 test_job:
+  image: maven:3.8.1  # Use an image that includes Maven
   stage: test
   script:
     - mvn $MAVEN_CLI_OPTS test
 
 build_job:
+  image: maven:3.8.1  # Use an image that includes Maven
   stage: build
   script:
     - mvn $MAVEN_CLI_OPTS clean install
