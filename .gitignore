@@ -1,0 +1,32 @@
+# Maven
+target/
+*.iml
+*.iws
+*.ipr
+.idea/
+mvnw
+mvnw.cmd
+
+# Eclipse
+.settings/
+.classpath
+.project
+.springBeans
+
+# NetBeans
+/nb-configuration.xml
+/build/
+/nbbuild/
+/dist/
+/nbdist/
+/nbactions.xml
+
+# VS Code
+.vscode/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*

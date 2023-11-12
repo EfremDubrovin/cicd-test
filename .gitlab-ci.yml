@@ -1,0 +1,24 @@
+stages:
+  - test
+  - build
+
+variables:
+  MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+
+before_script:
+  - export MAVEN_HOME=$(mvn -B --version | grep 'Maven home' | awk '{print $3}')
+  - export PATH=$MAVEN_HOME/bin:$PATH
+
+test_job:
+  stage: test
+  script:
+    - mvn $MAVEN_CLI_OPTS test
+
+build_job:
+  stage: build
+  script:
+    - mvn $MAVEN_CLI_OPTS clean install
+  artifacts:
+    paths:
+      - target/*.jar
