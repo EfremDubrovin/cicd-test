@@ -1,7 +1,7 @@
 stages:
   - test
   - build
-  - trigger_aggregator_pipeline
+  - trigger
 
 variables:
   MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version"
