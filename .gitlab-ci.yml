@@ -36,4 +36,4 @@ trigger_aggregator_pipeline:
     - main
   script:
     - echo $CI_JOB_TOKEN
-    - curl -X POST -F token=$CI_JOB_TOKEN -F ref=main https://gitlab.com/api/v4/projects/cicd-training2/aggregator/trigger/pipeline
+    - curl -X POST -F token=$CI_JOB_TOKEN -F ref=main https://gitlab.com/api/v4/projects/cicd-training2/52100758/trigger/pipeline
