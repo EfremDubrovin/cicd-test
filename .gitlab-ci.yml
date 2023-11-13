@@ -19,7 +19,7 @@ build_job:
   script:
     - VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
     - ARTIFACT_ID=$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)
-    - JAR_NAME=$(echo "$ARTIFACT_ID-$VERSION")
+    - JAR_NAME=$(echo "$ARTIFACT_ID-$VERSION.jar")
     - echo $JAR_NAME
     - mvn $MAVEN_CLI_OPTS clean install
   # dependencies:
