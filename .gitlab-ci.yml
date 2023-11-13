@@ -46,6 +46,7 @@ release-jar:
     - git config user.name release-user
     - mkdir -p ~/.ssh
     - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+    - chmod 700 -R ~/ssh
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no \n\n" > ~/.ssh/config'
     - git checkout -B "$CI_COMMIT_REF_NAME"
     - mvn release:prepare -Dresume=false -DskipTests=true -DcheckModificationExcludeList=pom.xml --settings .m2/settings.xml -B
