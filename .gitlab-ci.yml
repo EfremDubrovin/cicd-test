@@ -42,8 +42,9 @@ release-jar:
   image: maven:3.8.1-openjdk-17  # Use an image that includes Maven
   stage: release
   script:
-    - ssh-add <(echo "$SSH_PRIVATE_KEY")
+    - echo $SSH_PRIVATE_KEY
     - mkdir -p ~/.ssh
+    - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no \n\n" > ~/.ssh/config'
     - echo $CI_COMMIT_REF_NAME
     - git checkout -B "$CI_COMMIT_REF_NAME"
