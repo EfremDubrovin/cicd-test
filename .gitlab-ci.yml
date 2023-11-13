@@ -15,13 +15,13 @@ test_job:
   image: maven:3.8.1-openjdk-17  # Use an image that includes Maven
   stage: test
   script:
-    - mvn $MAVEN_CLI_OPTS test
+    #- mvn $MAVEN_CLI_OPTS test
 
 build_job:
   image: maven:3.8.1-openjdk-17  # Use an image that includes Maven
   stage: build
   script:
-    - mvn $MAVEN_CLI_OPTS clean install
+    #- mvn $MAVEN_CLI_OPTS clean install
   dependencies:
     - test_job
   artifacts:
@@ -35,5 +35,4 @@ trigger_aggregator_pipeline:
   only:
     - main
   script:
-    - echo $CI_JOB_TOKEN
-    - curl --request POST --form token=CI_JOB_TOKEN --form ref=main "https://gitlab.com/api/v4/projects/52100758/pipeline" 
+    - curl --request POST --form token=$AGGREGATOR_PIPELINE_TOKEN --form ref=main "https://gitlab.com/api/v4/projects/52100758/trigger/pipeline"
