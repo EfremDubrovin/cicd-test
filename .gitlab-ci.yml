@@ -42,13 +42,11 @@ release-jar:
   image: maven:3.8.1-openjdk-17  # Use an image that includes Maven
   stage: release
   script:
-    - echo $SSH_PRIVATE_KEY
     - mkdir -p ~/.ssh
     - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no \n\n" > ~/.ssh/config'
-    - echo $CI_COMMIT_REF_NAME
     - git checkout -B "$CI_COMMIT_REF_NAME"
-    - mvn release:prepare -Dresume=false -DskipTests=true -DcheckModificationExcludeList=pom.xml --settings ./m2/settings.xml -B
+    - mvn release:prepare -Dresume=false -DskipTests=true -DcheckModificationExcludeList=pom.xml --settings m2/settings.xml -B
 
 #trigger_dependant_projects:
 #  stage: trigger
