@@ -15,12 +15,14 @@ test_job:
   image: maven:3.8.1-openjdk-17  # Use an image that includes Maven
   stage: test
   script:
+    - echo ""
     #- mvn $MAVEN_CLI_OPTS test
 
 build_job:
   image: maven:3.8.1-openjdk-17  # Use an image that includes Maven
   stage: build
   script:
+    - echo ""
     #- mvn $MAVEN_CLI_OPTS clean install
   dependencies:
     - test_job
