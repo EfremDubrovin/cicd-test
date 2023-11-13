@@ -2,6 +2,7 @@ stages:
   - test
   - build
   - trigger
+  - release
 
 variables:
   MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version"
@@ -13,20 +14,20 @@ variables:
 #   script:
 #     - mvn $MAVEN_CLI_OPTS test
 
-build_job:
-  image: maven:3.8.1-openjdk-17  # Use an image that includes Maven
-  stage: build
-  script:
-    - VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
-    - ARTIFACT_ID=$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)
-    - JAR_NAME=$(echo "$ARTIFACT_ID-$VERSION.jar")
-    - echo $JAR_NAME
-    - mvn $MAVEN_CLI_OPTS clean install
-  # dependencies:
-  #   - test_job
-  artifacts:
-    paths:
-      - target/*.jar
+#build_job:
+#  image: maven:3.8.1-openjdk-17  # Use an image that includes Maven
+#  stage: build
+#  script:
+#    - VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+#    - ARTIFACT_ID=$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)
+#    - JAR_NAME=$(echo "$ARTIFACT_ID-$VERSION.jar")
+#    - echo $JAR_NAME
+#    - mvn $MAVEN_CLI_OPTS clean install
+#  # dependencies:
+#  #   - test_job
+#  artifacts:
+#    paths:
+#      - target/*.jar
 
 # trigger_aggregator_pipeline:
 #   stage: trigger
@@ -37,11 +38,22 @@ build_job:
 #   script:
 #     - curl --request POST --form token=$AGGREGATOR_PIPELINE_TOKEN --form ref=main "https://gitlab.com/api/v4/projects/52100758/trigger/pipeline"
 
-trigger_dependant_projects:
-  stage: trigger
-  parallel:
-    matrix:
-    - DOMAIN_DEPENDENCIES:
-      - cicd-training2/aggregator
-  trigger:
-    project: "$DOMAIN_DEPENDENCIES"
+release-jar:
+  image: maven:3.8.1-openjdk-17  # Use an image that includes Maven
+  stage: release
+  script:
+    - ssh-add <(echo "$SSH_PRIVATE_KEY")
+    - mkdir -p ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no \n\n" > ~/.ssh/config'
+    - echo $CI_COMMIT_REF_NAME
+    - git checkout -B "$CI_COMMIT_REF_NAME"
+    - mvn release:prepare -Dresume=false -DskipTests=true -DcheckModificationExcludeList=pom.xml --settings ./m2/settings.xml -B
+
+#trigger_dependant_projects:
+#  stage: trigger
+#  parallel:
+#    matrix:
+#    - DOMAIN_DEPENDENCIES:
+#      - cicd-training2/aggregator
+#  trigger:
+#    project: "$DOMAIN_DEPENDENCIES"
