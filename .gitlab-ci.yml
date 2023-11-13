@@ -7,23 +7,21 @@ variables:
   MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version"
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
 
-before_script:
-  - export MAVEN_HOME=$(mvn -B --version | grep 'Maven home' | awk '{print $3}')
-  - export PATH=$MAVEN_HOME/bin:$PATH
-
-test_job:
-  image: maven:3.8.1-openjdk-17  # Use an image that includes Maven
-  stage: test
-  script:
-    - echo ""
-    #- mvn $MAVEN_CLI_OPTS test
+# test_job:
+#   image: maven:3.8.1-openjdk-17  # Use an image that includes Maven
+#   stage: test
+#   script:
+#     - mvn $MAVEN_CLI_OPTS test
 
 build_job:
   image: maven:3.8.1-openjdk-17  # Use an image that includes Maven
   stage: build
   script:
-    - echo ""
-    #- mvn $MAVEN_CLI_OPTS clean install
+    - VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+    - ARTIFACT_ID=$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)
+    - JAR_NAME=$(echo "$ARTIFACT_ID-$VERSION")
+    - echo $JAR_NAME
+    - mvn $MAVEN_CLI_OPTS clean install
   dependencies:
     - test_job
   artifacts:
