@@ -9,7 +9,7 @@
     </parent>
     <groupId>com.deltasource.eu</groupId>
     <artifactId>domain-model</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.2</version>
     <packaging>jar</packaging>
     <name>domain-model</name>
     <description>Domain model</description>
@@ -84,7 +84,7 @@
     </distributionManagement>
     <scm>
         <developerConnection>scm:git:git@gitlab.com:cicd-training2/domain-model.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>domain-model-0.0.2</tag>
     </scm>
 
 </project>
