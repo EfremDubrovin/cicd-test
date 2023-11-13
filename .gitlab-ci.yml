@@ -50,6 +50,7 @@ release-jar:
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no \n\n" > ~/.ssh/config'
     - git checkout -B "$CI_COMMIT_REF_NAME"
     - mvn release:prepare -Dresume=false -DskipTests=true -DcheckModificationExcludeList=pom.xml --settings .m2/settings.xml -B
+    - mvn release:perform -DskipTests=true --settings settings.xml -B
 
 #trigger_dependant_projects:
 #  stage: trigger
