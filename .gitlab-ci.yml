@@ -22,8 +22,19 @@ build_job:
   image: maven:3.8.1-openjdk-17  # Use an image that includes Maven
   stage: build
   script:
-    - echo ""
-    #- mvn $MAVEN_CLI_OPTS clean install
+    - mvn $MAVEN_CLI_OPTS clean install
+    # Extract version from pom.xml
+    - export VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+    # Build Docker image
+    - echo $VERSION
+    - docker build -t $CI_REGISTRY_IMAGE/${CI_PROJECT_NAME}:${VERSION} .
+    # Create a Docker image with the JAR file
+    - docker build -t $CI_REGISTRY_IMAGE/${CI_PROJECT_NAME}:${VERSION} \
+        --build-arg JAR_FILE=target/*.jar \
+        -f Dockerfile_with_jar .
+    # Push Docker image to the GitLab Container Registry
+    - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker push $CI_REGISTRY_IMAGE/${CI_PROJECT_NAME}:${VERSION}
   dependencies:
     - test_job
   artifacts:
