@@ -42,6 +42,8 @@ release-jar:
   image: maven:3.8.1-openjdk-17  # Use an image that includes Maven
   stage: release
   script:
+    - git config user.email release-user@mail.com
+    - git config user.name release-user
     - mkdir -p ~/.ssh
     - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no \n\n" > ~/.ssh/config'
