@@ -45,8 +45,8 @@ release-jar:
     - chmod 700 ~/.ssh/id_rsa
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no \n\n" > ~/.ssh/config'
     - git checkout -B "$CI_COMMIT_REF_NAME"
-    - mvn release:prepare -Dresume=false -DskipTests=true -DcheckModificationExcludeList=pom.xml --settings .m2/settings.xml -B
-    - mvn release:perform -DskipTests=true --settings .m2/settings.xml -B
+    - mvn release:prepare -Dresume=false -DskipTests=true -DcheckModificationExcludeList=pom.xml --settings $SETTINGS_XML -B
+    - mvn release:perform -DskipTests=true --settings $SETTINGS_XML -B
   rules:
     - when: manual
 #    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_COMMIT_TAG != ""'
