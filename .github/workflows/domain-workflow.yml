@@ -7,7 +7,7 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     steps:
       - name: Checkout code
@@ -23,7 +23,7 @@ jobs:
         run: mvn --batch-mode --errors --fail-at-end --show-version test --settings .m2/settings.xml
 
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     needs: test
 
