@@ -82,9 +82,9 @@
 <!--            <url>https://gitlab.com/api/v4/projects/52100006/packages/maven</url>-->
 <!--        </snapshotRepository>-->
 <!--    </distributionManagement>-->
-<!--    <scm>-->
-<!--        <developerConnection>scm:git:git@gitlab.com:cicd-training2/domain-model.git</developerConnection>-->
-<!--        <tag>HEAD</tag>-->
-<!--    </scm>-->
+    <scm>
+        <developerConnection>scm:git:git@gitlab.com:cicd-training2/domain-model.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
 
 </project>
