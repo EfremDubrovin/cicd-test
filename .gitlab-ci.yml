@@ -8,28 +8,24 @@ variables:
   MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version"
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
 
-# test_job:
-#   image: maven:3.8.1-openjdk-17  # Use an image that includes Maven
-#   stage: test
-#   script:
-#     - mvn $MAVEN_CLI_OPTS test
+test_job:
+   image: maven:3.8.1-openjdk-17  # Use an image that includes Maven
+   stage: test
+   script:
+     - mvn $MAVEN_CLI_OPTS test
 
-#build_job:
-#  image: maven:3.8.1-openjdk-17  # Use an image that includes Maven
-#  stage: build
-#  script:
-#    - VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
-#    - ARTIFACT_ID=$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)
-#    - JAR_NAME=$(echo "$ARTIFACT_ID-$VERSION.jar")
-#    - echo $JAR_NAME
-#    - mvn $MAVEN_CLI_OPTS clean install
-#  # dependencies:
-#  #   - test_job
-#  artifacts:
-#    paths:
-#      - target/*.jar
+build_job:
+  image: maven:3.8.1-openjdk-17  # Use an image that includes Maven
+  stage: build
+  script:
+    - mvn $MAVEN_CLI_OPTS clean install
+   dependencies:
+     - test_job
+  artifacts:
+    paths:
+      - target/*.jar
 
-# trigger_aggregator_pipeline:
+#trigger_aggregator_pipeline:
 #   stage: trigger
 #   dependencies:
 #     - build_job
@@ -51,12 +47,16 @@ release-jar:
     - git checkout -B "$CI_COMMIT_REF_NAME"
     - mvn release:prepare -Dresume=false -DskipTests=true -DcheckModificationExcludeList=pom.xml --settings .m2/settings.xml -B
     - mvn release:perform -DskipTests=true --settings .m2/settings.xml -B
+  rules:
+    - when: manual
+#    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_COMMIT_TAG != ""'
+#    - when: always
 
-#trigger_dependant_projects:
-#  stage: trigger
-#  parallel:
-#    matrix:
-#    - DOMAIN_DEPENDENCIES:
-#      - cicd-training2/aggregator
-#  trigger:
-#    project: "$DOMAIN_DEPENDENCIES"
+trigger_dependant_projects:
+  stage: trigger
+  parallel:
+    matrix:
+    - DOMAIN_DEPENDENCIES:
+      - cicd-training2/aggregator
+  trigger:
+    project: "$DOMAIN_DEPENDENCIES"
