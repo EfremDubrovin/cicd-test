@@ -19,7 +19,7 @@ build_job:
   stage: build
   script:
     - mvn $MAVEN_CLI_OPTS clean install
-   dependencies:
+  dependencies:
      - test_job
   artifacts:
     paths:
