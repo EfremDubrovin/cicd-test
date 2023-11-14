@@ -4,26 +4,26 @@ stages:
   - trigger
   - release
 
-#variables:
-#  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version"
-#  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
-#
-#test_job:
-#   image: maven:3.8.1-openjdk-17  # Use an image that includes Maven
-#   stage: test
-#   script:
-#     - mvn $MAVEN_CLI_OPTS test
-#
-#build_job:
-#  image: maven:3.8.1-openjdk-17  # Use an image that includes Maven
-#  stage: build
-#  script:
-#    - mvn $MAVEN_CLI_OPTS clean install
-#  dependencies:
-#     - test_job
-#  artifacts:
-#    paths:
-#      - target/*.jar
+variables:
+  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version"
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+
+test_job:
+   image: maven:3.8.1-openjdk-17  # Use an image that includes Maven
+   stage: test
+   script:
+     - mvn $MAVEN_CLI_OPTS test
+
+build_job:
+  image: maven:3.8.1-openjdk-17  # Use an image that includes Maven
+  stage: build
+  script:
+    - mvn $MAVEN_CLI_OPTS clean install
+  dependencies:
+     - test_job
+  artifacts:
+    paths:
+      - target/*.jar
 
 #trigger_aggregator_pipeline:
 #   stage: trigger
@@ -52,11 +52,11 @@ release-jar:
 #    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_COMMIT_TAG != ""'
 #    - when: always
 
-#trigger_dependant_projects:
-#  stage: trigger
-#  parallel:
-#    matrix:
-#    - DOMAIN_DEPENDENCIES:
-#      - cicd-training2/aggregator
-#  trigger:
-#    project: "$DOMAIN_DEPENDENCIES"
+trigger_dependant_projects:
+  stage: trigger
+  parallel:
+    matrix:
+    - DOMAIN_DEPENDENCIES:
+      - cicd-training2/aggregator
+  trigger:
+    project: "$DOMAIN_DEPENDENCIES"
